@@ -235,6 +235,28 @@ Reference:
 https://docs.djangoproject.com/en/2.2/intro/tutorial02/
 
 
+API za interakciju sa bazom primjer: 
+	Question.objects.all()- ispis pitanja iz klase Question 
+	a=Question.objects.get(id=1) - sprema u a pitanje koje se nalazi na idu jedan 
+	b=Question(question.text="Sta ima ? ") - dodavanje novog pitanja 
+	Question.objects.filter(question_text__startswith='Sta') - vraca pitanja koja u sebi sadrze sta 
+	q.choice_set.create(choice_text='Nista', votes=0) - postavljanje odgovora 
+
+
+Kreiranje templatea , templeti u kombinacije html i python koda tempeti se kreiraju u direktoriju gdje se nalazi app. 
+Kreira se direktorij pod nazivom templates i u njemu se kreira novi folder sa istim nazivom kao i app, i u tom direktoriju se kreiaju html fajlovi. 
+Tako npr koristimo polls/index.html za poyiv odredenog templatea. 
+Ya loaadanje tempplatea cesto se koristi funkcija render koja vraca htttp obradenog templaea. 
+render() prima tri argumenta zahhtvjem template i context koji je opcionalni. 
+
+U stvarnim sistema kada se koristi vise aplikacija moguce je da se dese isti url nazivi, stoga je dobra praksa stavljati i app_name np nazin applikacije na koju se odnosi. Tada url recimo ya polls u templateu polls/index.html umjesto <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li> izgleda  <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li> sa dodanim nazivom appa ispred naziva urla. 
+
+
+
+Reference: 
+https://docs.djangoproject.com/en/2.2/intro/tutorial02/
+
+
 
 
 
