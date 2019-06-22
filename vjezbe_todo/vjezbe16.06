@@ -1,0 +1,189 @@
+
+Diyajn paterni MVC i MVT
+
+
+Napraviti funkcije za tijela trenutnih funkcija 
+
+
+ctrl +r reverse search u terminalu 
+c. tab  auto complete 
+
+
+/*************************SSH **************************************************/
+SSH Github googlati
+1) Generisemo novi ssh kljuc komandom 
+	ssh-keygen -t rsa -b 4096 -C "harun@eacon.ba" gdje se email koristi kao label7
+Komanda ce nam geenerisati SSH kez i traziti od nas lokaciju na koju zelimo da snimimo kljuc
+ 
+2)U pozadini pokrecemo ssh-agent koji upravlja ssh kljucevima komandom: 
+	eval "$(ssh-agent -s)" komanda ce pokrenuti proces u pozadiini i vratiti nam PID processa (PRocess Identitation) 
+3) Dodavanje generisanog privatnog kljuca u SSH agent 
+	ssh-add ~/.ssh/id_rsa
+4) Nakon ovoga je potrebno povezati dobivene kljuceve sa GitHub accountom i promjenuti nacin prenosenja podatakaa kada kloniramo repository. 
+Prvo cemo instalirati program koji ce simati fajl datoteke u clipboard. Program se zove xclip i instalira sse pomocu get-apt: 
+	sudo apt-get install xclip
+Nakon instalacije da bi snimili sadrzaj datoteke u clipboard koristimo sljedecu komand: 
+	xclip -sel clip < ~/.ssh/id_rsa.pub
+Nakon sto smo snimili sadrzaj datoteke id_rsa u clipboard , sljedeci korak je da odemo na github account Setting-> SSH and GPS keys i dodamo novi SSH kljuc. 
+
+4) Kada smo dodali novi SSH kljuc potrebno je sada da promjenimo nacin prenosenja podataka umjesto HTTPS na SSH . 
+MOramo dodati novi remote: 
+	 git remote set-url origin git@github.com:Kaknjo/django-.git
+
+Instalirati key-gen - to ce generisati privatni i public key u nekom od foldera 
+public key prebacitna github(setting githuba ima opcija public key) 
+
+
+Tutorijali: 
+https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key
+https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account
+https://help.github.com/en/articles/about-ssh
+https://help.github.com/en/articles/changing-a-remotes-url#switching-remote-urls-from-https-to-ssh
+
+/********************************************************************************/
+File system Linux 
+https://www.youtube.com/watch?v=HbgzrKJvDRw
+
+bash googlati 
+ls |grep googlati 
+
+lsb fajlove izguglati 
+ispititati proc direktorij sta se nalazi
+cd /proc/
+
+man ps- googlati (current process) 
+
+ps aux googlati 
+
+
+
+/*********************NETSTAT**************************************************/
+netstat googlati i instalirati
+sudo apt-get install net-tools ya instaliranje 
+
+netstat -a ispisuje listu svih trenutnih konekcija 
+
+netstat -at lista samo tcp konekcija 
+netstat -au lista udp konekcija 
+netstat -ant ne iybacuje nam naziv hosta za svaku konekciju odnosno dobijamo bryu pretragu
+netstat -al rezultat su samo listen portovi
+sudo netstat -nltp - dobijamo process id PID , kada se koristi -p (netstat mora se pozvati sa root privilegijama) 
+netstat -s Iybacuje net statistiku odnosno koliko je paketa primljeno i transmitovano od strane protokola i slicno 
+netstat -atnp | grep ESTA sve aktivne konekcije trenutno 
+Instalirati mysql i vjezbati osnovne komande 
+
+
+
+
+SQL nauciti 
+select, insert , update, delete , alter , create(table, database)
+Foreign Kez , Primary key , index ... triger, stored procedures, engines.. 
+
+>> append, insert, delete text from /in file from shell, 
+touch kreiranje praynog fajla  
+
+
+
+vim ili vi editor
+
+
+
+
+Pogledati kako se i brise mysql server 
+
+
+
+Instalacija MySql servera
+
+sudo apt update 
+sudo apt-get install mysql-server instaliranje mysql servera ali bez postavljanja poassworda i ostalih sigurnosnih stvari 
+sudo mysql_ssecure_installation - secure instaliranje prolazi se kroz niz promptova ya opostavljanje i odobravanje odredenih sigurnosnih stvari za pojedine usere 
+
+SELECT user,authentication_string,plugin,host FROM mysql.user; provjera koji sistem autentifikaciije koristi svaki od accounta na mysql serveru. 
+Posto je password za roota postavljao auth_socket promjena passworda se vrsi komandom ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+
+FLUSH PRIVILEGES; govori serveru da smo mijenjali grant tabele i da snimi novo stanje
+
+syestemctl status mysql.service provjera statusa mysql
+
+sudo systemctl start mysql pokretanje mysql servera
+sudo mysqladmin -p -u root version prijava kao admin user ima odredene admin priviligeije i kao reyultat bi trebali da dobijemo i verziju mzsql koja je u ovom slucaju 5.7.26
+
+Link: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
+
+Za ispis svih baza podataka koristi se naredba SHOW DATABASES;
+Za ulazak u bazu podataka USE DATABASE imebaze; 
+Za kreiranje tabele koristi se create table korisnici(id int not null auto_increment, ime varchar(255) not null, prezime varchar(255) not null, primary key(id));
+
+oVDJE JE data jednostavna tabela koja sadrzi ime prezime i id gdje je id primary key int varijabla koja ce id biti u ovom slucaju integerr , ime i prezime su varchar sto ynaci karakteri odnosno u ovom slucaju moguce je unijeti 255 karaktera u jedno polje. 
+
+Za dodavanje INSERT INTO korisnici(ime, prezime) VALUES ('Harun' , 'kaknjo'); 
+SELECT * FROM korisinici; vraca sve iy tabele korisnici ekvivalento sa komandom u djanguu npr Question.select.all()
+
+
+Primary key - jedinstveni red za svaku kolonu, ne smije biti nulla obicno je to id ali moguce staviti i bilo koji drugi red za koji znamo da ce biti jedinstven i da nikada nece biti nulla 
+
+
+
+1) Kreiramo bazu podatka za malu firmu create database firma; 
+2) Dodajemo prvu tabelu uposlenici CREATE TABLE uposlenici(up_id INT PRIMARY KEY, ime VARCHAR(50), prezime VARCHAR(50), datum_rodenja DATE, plata INT, super_id INT, branch_id INT); gdje je up_id primary key, a super_id  ce foreign key koji ce menagera za datog uposlenika, branch_id ce biti foreign_key to jest  primary key iz brances tabele. 
+
+Kreiramo tabelu branches
+CREATE TABLE branches(branch_id  INT PRIMARY KEY , ime_branche VARCHAR(50), mgr_id id , mgr_date DATE, FOREIGN KEY(mgr_id) REFERENCES uposlenici(up_id) ON DELETE SET NULL);
+
+Posto smo  u tabeli uposlenici dodali i kolone super_id i branch_id koje smo zamislili kao foreign key ali ih nismo mogli odmah dodati jer druga tabela nije postojalo samo pomocu ALTER TABLE treba da dodamo te dvije kolone kao foreign key. 
+ALTER TABLE uposlenici ADD  FOREIGN KEY(branch_id) REFERENCES branches(branch_id)ON DELETE SET NULL;
+
+ALTER TABLE uposlenici ADD  FOREIGN KEY(super_id) REFERENCES uposlenici(up_id)ON DELETE SET NULL;
+
+Sada kreiramo trecu tabelu klijenti koja ce se sastojati od client_ida primary key , imena klienta i branch_id koji ce biti foreign key i povezvati klient tabelu sa branch tabelom. 
+
+CREATE TABLE klijenti( klijent_id INT PRIMARY KEY, ime_klijenta VARCHAR(50) , branch_id INT, FOREIGN KEY(branch_id) REFERENCES brances(branch_id) ON DELETE SET NULL);
+
+SLjedece tabela je tabela koaj povezuje klijente i uposlenike i sadrzi jos koliko novca su razmjenili. U ovom slucaju imat ce composite key (primary key) sa dvije kolone i obje kolone ce biti i foreign key .
+
+CREATE table radi_sa(up_id INT, klijent_id INT, ukupno_prodano INT , PRIMARY KEY(up_id, klijent_id), FOREIGN KEY(up_id) REFERENCES uposlenici(up_id) ON DELETE CASCADE, 
+FOREIGN KEY(klijent_id) REFERENCES klijenti(klijent_id) ON DELETE CASCADE);
+
+Kreiramo jos jednu tabelu branch dobavljac koja ce sadrzavat branch_id, ime dobavljaca  i tip dostave, i uovom slucaju imamo composite key branch_id i naziv dostavljaca, a branch_id je i foreign key. 
+
+CREATE TABLE branch_dostavljac( branch_id INT , ime_dostavljaca VARCHAR(50) , tip_dostave VARCHAR(50), PRIMARY KEY(branch_id, ime_dostavljaca) , FOREIGN KEY (branch_id) REFERENCES branches(branch_id) ON DELETE CASCADE); 
+
+Funkcije koje ce cesto koriste;
+SELECT COUNT(ime kolone) FROM nazivtabel; - broji koliko ima redova za datu kolonu 
+AVG(ime kolone)  - prosjecnu vriejdnost kolone 
+SUM(ime kolone ) - sumu svih redova za datu kolonu 	
+
+SELECT SUM(ukupno_prodano), up_id 
+FROM radi_sa 
+GROUPED BY up_id; Vraca nam koliko je svaki od uposlenika ukupno novca yaradio za firmu
+
+
+
+QUERY DODATNI ; 
+SELECT * FROM uposlenici 
+ORDER BY ime;
+
+SELECT ime as vase_ime FROM uposlenici; 
+
+select up_id, ime , prezime
+ FROM uposlenici
+ WHERE datum_rodenja> 1970-01-01;
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+ 
+
+
+sudo apt
