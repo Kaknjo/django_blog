@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+	<h1>{{ post.title}}</h1>
+	<hr>
+	
+	<small>
+		{{post.created_on.date}}| &nbsp;
+		Categories: &nbsp;
+
+		{% for category in post.categories.all %}
+		<a href="{ % url 'blog_detail' category.name %}">
+			{{category.name}}
+		</a>&nbsp;
+		{%endfor %}
+	</small>
+	<p>{{post.sadrzaj|linebreaks }}</p>
+	<form method="POST" action="/blog/{{post.pk}}/" >{% csrf_token%}
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4"> Ostavite komentar</legend>
+				{{form|crispy}}
+		</fieldset>
+		<div class="form-group">
+			<button class="btn btn-outline-info" type="submit">Comment</button>
+		</div>
+	</form>
+	<h2>Comments</h2>
+	{% for comment in comments%}
+	<p>{{comment.created_on.date}}&nbsp; komentar napisao {{comment.author }}</p>
+	<p>{{comment.sadrzaj}}</p>
+	<hr>
+		
+	{% endfor %}
+	
+</div>
+
+
+	
+{% endblock %}

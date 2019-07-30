@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+	<h1>Blog index</h1>
+	<hr>
+	{% for pos in post %}
+	<h2><a href="{% url 'blog_detail' pos.pk %} ">{{ pos.title}} </a></h2>
+	<small>
+		{{pos.created_on.date}}| &nbsp;
+		Categories: &nbsp;
+
+		{% for category in pos.categories.all %}
+		<a href="{ % url 'blog_detail' category.name %}">
+			{{category.name}}
+		</a>&nbsp;
+		{%endfor %}
+	</small>
+	<p>{{pos.sadrzaj | slice:":400"}}...</p>
+	{% endfor %}
+</div>
+
+
+	
+{% endblock %}
